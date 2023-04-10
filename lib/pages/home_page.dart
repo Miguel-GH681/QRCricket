@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_cricket/models/scan_model.dart';
 import 'package:qr_cricket/pages/adresses_page.dart';
 import 'package:qr_cricket/pages/maps_page.dart';
+import 'package:qr_cricket/providers/db_provider.dart';
 import 'package:qr_cricket/providers/ui_provider.dart';
 import 'package:qr_cricket/widgets/custom_navigatorbar.dart';
 import 'package:qr_cricket/widgets/scanner_button.dart';
@@ -39,6 +41,9 @@ class _HomePageBody extends StatelessWidget {
     final uiProvider = Provider.of<UiProvider>(context);
 
     final currentIndex = uiProvider.selectedMenuOption;
+
+    // final tempScan = new ScanModel(valor: 'http://localhost');
+    // DbProvider.db.getScanById(2).then((scan)=> print(scan.valor));
 
     switch (currentIndex) {
       case 0:

@@ -10,5 +10,5 @@ class UiProvider extends ChangeNotifier{
   set updateSelectedMenuOption( int i ) {
     _selectedMenuOption = i;
     notifyListeners();
-  }  
+  }
 }
