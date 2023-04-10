@@ -8,7 +8,7 @@ class CustomTheme{
       backgroundColor: primary
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: primary
+      backgroundColor: primary 
     )
   );
 }
