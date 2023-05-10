@@ -14,7 +14,9 @@ class CustomNavigatorBar extends StatelessWidget {
     final currentIndex = uiProvider.selectedMenuOption;
 
     return BottomNavigationBar(
-      onTap: (value) => uiProvider.updateSelectedMenuOption = value,
+      onTap: (value) {
+        uiProvider.updateSelectedMenuOption = value;
+      },
       currentIndex: currentIndex,
       items: const [
         BottomNavigationBarItem(

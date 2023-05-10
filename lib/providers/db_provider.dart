@@ -81,8 +81,15 @@ class DbProvider {
 
   getScansByType( String tipo ) async {
     final db = await database;
-    final res = db!.query('Scans', where: 'tipo = ?', whereArgs: [tipo]);
-    return res;
+    final List<Map<String, dynamic>> res = await db!.query('Scans', where: 'tipo = ?', whereArgs: [tipo]);
+    return List.generate(
+      res.length, 
+      (i)=> ScanModel(
+        id: res[i]['id'],
+        valor: res[i]['valor'],
+        tipo: res[i]['tipo']
+      )
+    );
   }
 
   updateScan( ScanModel scanModel) async { 
@@ -99,9 +106,7 @@ class DbProvider {
 
   Future<int> deleteScans() async {
     final db = await database;
-    final res = await db!.rawDelete('''
-      DELETE * FROM Scans
-    ''');
+    final res = await db!.rawDelete('DELETE FROM Scans WHERE tipo = ? or tipo = ?', ['http', 'geo']);
     return res;
   }
 }

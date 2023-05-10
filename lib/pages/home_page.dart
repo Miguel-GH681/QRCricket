@@ -4,6 +4,7 @@ import 'package:qr_cricket/models/scan_model.dart';
 import 'package:qr_cricket/pages/adresses_page.dart';
 import 'package:qr_cricket/pages/maps_page.dart';
 import 'package:qr_cricket/providers/db_provider.dart';
+import 'package:qr_cricket/providers/scan_list_provider.dart';
 import 'package:qr_cricket/providers/ui_provider.dart';
 import 'package:qr_cricket/widgets/custom_navigatorbar.dart';
 import 'package:qr_cricket/widgets/scanner_button.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
         title: const Text('Historial'),
         actions: [
           IconButton(
-            onPressed: ()=>null, 
+            onPressed: ()=> deleteHistory(context), 
             icon: const Icon(Icons.delete_forever)
           )
         ],
@@ -39,21 +40,27 @@ class _HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final uiProvider = Provider.of<UiProvider>(context);
-
     final currentIndex = uiProvider.selectedMenuOption;
 
-    // final tempScan = new ScanModel(valor: 'http://localhost');
-    // DbProvider.db.getScanById(2).then((scan)=> print(scan.valor));
+    final scanListProvider = Provider.of<ScanListProvider>(context);
 
     switch (currentIndex) {
       case 0:
+        scanListProvider.loadScansByType( 'geo' );
         return MapsPage();
 
       case 1:
+        scanListProvider.loadScansByType( 'http' );
         return AdressesPage();
 
       default:
+        scanListProvider.loadScansByType( 'geo' );
         return MapsPage();
     }
   }
+}
+
+deleteHistory(context){
+  final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
+  scanListProvider.deleteAll();
 }

@@ -8,31 +8,36 @@ class ScanListProvider extends ChangeNotifier{
   String tipoSeleccionado = 'http';
 
   newScan( String valor ) async {
-    final newScanModel = new ScanModel(valor: valor);
-    final id = await DbProvider.db.newScan(newScanModel);
-    newScanModel.id = id;
-    if( tipoSeleccionado == newScanModel.tipo ){
-      scans.add(newScanModel);
+    final newScan = new ScanModel(valor: valor);
+    final id = await DbProvider.db.newScan(newScan);
+    newScan.id = id;
+    if( tipoSeleccionado == newScan.tipo ){
+      scans.add(newScan);
       notifyListeners();
     }
+  } 
+  
+  loadScans() async { 
+    final scans = await DbProvider.db.getScans(); 
+    this.scans = [...scans];  
+    notifyListeners();  
+  } 
+  
+  loadScansByType( String tipo ) async {  
+    final scans = await DbProvider.db.getScansByType(tipo); 
+    this.scans = [...scans];  
+    tipoSeleccionado = tipo;  
+    notifyListeners();  
+  } 
+  
+  deleteAll() async { 
+    await DbProvider.db.deleteScans();  
+    this.scans = [];  
+    notifyListeners();  
   }
 
-  loadScans() async {
-    final scans = await DbProvider.db.getScans();
-    this.scans = [...scans];
-    notifyListeners();
-  }  
-
-  loadScansByType(String tipo ) async {
-    final scans = await DbProvider.db.getScansByType(tipo);
-    this.scans = [...scans];
-    tipoSeleccionado = tipo;
-    notifyListeners();
+  deleteById( int id ) async {
+    await DbProvider.db.deleteScan( id );
+    loadScans();
   }
-
-  deleteAll() async {
-    await DbProvider.db.deleteScans();
-    this.scans = [];
-    notifyListeners();
-  }
-}
+} 
